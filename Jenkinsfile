@@ -1,63 +1,54 @@
 pipeline {
     agent any
 
-    environment {
-        VENV_DIR = 'venv'
-        PYTHON = '"C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe"' // Full path to Python with quotes
-    }
-
     stages {
-        stage('Clone Repository') {
+        stage('Declarative: Checkout SCM') {
             steps {
-                git branch: 'main', url: 'https://github.com/srushti2807/stockpriceprediction.git'
+                checkout scm
             }
         }
 
-        stage('Set up Virtual Environment & Install Dependencies') {
+        stage('Clone Repository') {
+            steps {
+                git 'https://github.com/srushti2807/stockpriceprediction.git'
+            }
+        }
+
+        stage('Install Dependencies') {
             steps {
                 script {
-                    bat """
-                        IF EXIST %VENV_DIR% rmdir /S /Q %VENV_DIR%
-                        %PYTHON% -m venv %VENV_DIR%
-                        call %VENV_DIR%\\Scripts\\activate.bat && pip install --upgrade pip
-                        call %VENV_DIR%\\Scripts\\activate.bat && pip install -r requirements.txt
-                    """
+                    // Ensure pip is upgraded and install dependencies
+                    bat '"C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" -m pip install --upgrade pip'
+                    bat '"C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" -m pip install -r requirements.txt'
+                }
+            }
+        }
+
+        stage('Run Stock.py') {
+            steps {
+                script {
+                    // Run the stock.py script
+                    bat '"C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" stock.py'
                 }
             }
         }
 
         stage('Run Tests') {
             steps {
-                script {
-                    bat """
-                        call %VENV_DIR%\\Scripts\\activate.bat
-                        echo "✅ No automated tests yet."
-                    """
-                }
+                // Run your tests if any
             }
         }
 
         stage('Run Streamlit App') {
             steps {
-                script {
-                    bat """
-                        call %VENV_DIR%\\Scripts\\activate.bat
-                        start /MIN streamlit run stock.py --server.headless true > streamlit.log 2>&1
-                    """
-                }
+                // Run the Streamlit app
             }
         }
-    }
 
-    post {
-        always {
-            echo '📝 Pipeline execution completed.'
-        }
-        success {
-            echo '✅ Deployment Successful!'
-        }
-        failure {
-            echo '❌ Deployment Failed.'
+        stage('Declarative: Post Actions') {
+            steps {
+                echo 'Pipeline execution completed.'
+            }
         }
     }
 }
