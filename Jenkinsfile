@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        PYTHON_PATH = '"C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe"'
+    }
+
     stages {
         stage('Clone Repository') {
             steps {
@@ -11,33 +15,33 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Ensure pip is upgraded and install dependencies
-                    bat '"C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" -m pip install --upgrade pip'
-                    bat '"C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" -m pip install -r requirements.txt'
+                    bat "${env.PYTHON_PATH} -m pip install --upgrade pip"
+                    bat "${env.PYTHON_PATH} -m pip install -r requirements.txt"
                 }
             }
         }
 
-        stage('Run Stock.py') {
+        stage('Run Script') {
             steps {
                 script {
-                    // Run the stock.py script
-                    bat '"C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe" stock.py'
+                    // Run the main Python script (backend logic or ML model)
+                    bat "${env.PYTHON_PATH} stock.py"
                 }
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Add any test commands here if you need
                 echo 'Running tests...'
+                // Optional: Add actual test commands or Python test framework
+                // bat "${env.PYTHON_PATH} -m unittest discover tests"
             }
         }
 
         stage('Run Streamlit App') {
             steps {
-                // Add commands for running Streamlit app if needed
-                echo 'Running Streamlit app...'
+                echo 'Launching Streamlit app...'
+                bat "streamlit run stock.py"
             }
         }
 
