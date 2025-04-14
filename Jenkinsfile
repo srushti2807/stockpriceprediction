@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         VENV_DIR = 'venv'
-        PYTHON = 'python' // Or give full path if needed, e.g., 'C:\\Python311\\python.exe'
+        PYTHON = 'C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe' // Full path to Python
     }
 
     stages {
@@ -60,5 +60,4 @@ pipeline {
             echo '❌ Deployment Failed.'
         }
     }
-} 
-
+}
