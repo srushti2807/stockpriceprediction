@@ -16,12 +16,10 @@ pipeline {
             steps {
                 script {
                     // Ensure a clean virtual environment
-                    sh '''#!/bin/bash
-                        if [ -d "$VENV_DIR" ]; then
-                            rm -rf $VENV_DIR
-                        fi
-                        python3 -m venv $VENV_DIR
-                        source $VENV_DIR/bin/activate
+                    bat '''
+                        IF EXIST "%VENV_DIR%" rmdir /S /Q %VENV_DIR%
+                        python -m venv %VENV_DIR%
+                        call %VENV_DIR%\\Scripts\\activate.bat
                         pip install --upgrade pip
                         pip install -r requirements.txt
                     '''
@@ -33,9 +31,9 @@ pipeline {
             steps {
                 script {
                     // Add any test running steps here
-                    sh '''#!/bin/bash
-                        source $VENV_DIR/bin/activate
-                        # Example test run command (adjust if you have test scripts)
+                    bat '''
+                        call %VENV_DIR%\\Scripts\\activate.bat
+                        REM Example test run command (adjust if you have test scripts)
                         echo "No tests yet, skipping..."
                     '''
                 }
@@ -46,9 +44,9 @@ pipeline {
             steps {
                 script {
                     // Run Streamlit app in the background
-                    sh '''#!/bin/bash
-                        source $VENV_DIR/bin/activate
-                        nohup streamlit run stock.py > streamlit.log 2>&1 &
+                    bat '''
+                        call %VENV_DIR%\\Scripts\\activate.bat
+                        start /B streamlit run stock.py > streamlit.log 2>&1
                     '''
                 }
             }
@@ -64,4 +62,3 @@ pipeline {
         }
     }
 }
-
