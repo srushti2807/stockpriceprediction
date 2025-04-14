@@ -2,15 +2,9 @@ pipeline {
     agent any
 
     stages {
-        stage('Declarative: Checkout SCM') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/srushti2807/stockpriceprediction.git'
+                git branch: 'main', url: 'https://github.com/srushti2807/stockpriceprediction.git'
             }
         }
 
@@ -47,7 +41,7 @@ pipeline {
             }
         }
 
-        stage('Declarative: Post Actions') {
+        stage('Post Actions') {
             steps {
                 echo 'Pipeline execution completed.'
             }
