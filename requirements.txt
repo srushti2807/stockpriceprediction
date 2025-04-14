@@ -1,9 +1,8 @@
-Flask
+streamlit
+yfinance
 pandas
 numpy
-yfinance
-scikit-learn
 matplotlib
 seaborn
 plotly
-Werkzeug
+scikit-learn
