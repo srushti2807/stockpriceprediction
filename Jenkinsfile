@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        python 'Python3' // Name as set in Global Tool Configuration
+        python 'Python3' // Ensure this is set in Global Tool Configuration
     }
 
     environment {
@@ -16,7 +16,7 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        stage('Set up Virtual Environment & Install Dependencies') {
             steps {
                 script {
                     bat """
@@ -34,8 +34,8 @@ pipeline {
                 script {
                     bat """
                         call %VENV_DIR%\\Scripts\\activate.bat
-                        REM Add your test commands here
-                        echo "No tests implemented yet."
+                        REM Add your test commands below
+                        echo "✅ No automated tests yet."
                     """
                 }
             }
@@ -46,7 +46,7 @@ pipeline {
                 script {
                     bat """
                         call %VENV_DIR%\\Scripts\\activate.bat
-                        start /B streamlit run stock.py > streamlit.log 2>&1
+                        start /MIN streamlit run stock.py --server.headless true > streamlit.log 2>&1
                     """
                 }
             }
@@ -54,6 +54,9 @@ pipeline {
     }
 
     post {
+        always {
+            echo '📝 Pipeline execution completed.'
+        }
         success {
             echo '✅ Deployment Successful!'
         }
@@ -62,3 +65,4 @@ pipeline {
         }
     }
 }
+
