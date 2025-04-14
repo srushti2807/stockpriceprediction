@@ -41,7 +41,7 @@ pipeline {
         stage('Run Streamlit App') {
             steps {
                 echo 'Launching Streamlit app...'
-                bat "\"${env.PYTHON_PATH}\" -m streamlit run stock.py"
+                bat 'start "" cmd /c "streamlit run stock.py"'
             }
         }
 
