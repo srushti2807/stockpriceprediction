@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/srushti2807/stockpriceprediction'
+                git 'https://github.com/srushti2807/stockpriceprediction.git'
             }
         }
 
