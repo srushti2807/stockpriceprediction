@@ -31,24 +31,28 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                echo 'Running tests...'
-                // Uncomment when you add tests
-                // bat "${env.PYTHON_PATH} -m unittest discover tests"
+                echo 'Running pytest tests...'
+                bat "${env.PYTHON_PATH} -m pytest --maxfail=1 --disable-warnings -q"
             }
         }
 
         stage('Run Streamlit App') {
             steps {
                 echo 'Launching Streamlit app...'
-                // Launch Streamlit in a separate command window
                 bat 'start "" cmd /c "streamlit run stock.py"'
             }
         }
+    }
 
-        stage('Post Actions') {
-            steps {
-                echo 'Pipeline execution completed.'
-            }
+    post {
+        always {
+            echo 'Pipeline execution completed.'
+        }
+        success {
+            echo '✅ All steps succeeded!'
+        }
+        failure {
+            echo '❌ One or more steps failed. Check logs.'
         }
     }
 }
