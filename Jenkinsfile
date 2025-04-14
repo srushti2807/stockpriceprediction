@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        PYTHON_PATH = 'C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe'
+        PYTHON_PATH = '"C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe"'
     }
 
     stages {
@@ -15,8 +15,8 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    bat "\"${env.PYTHON_PATH}\" -m pip install --upgrade pip"
-                    bat "\"${env.PYTHON_PATH}\" -m pip install -r requirements.txt"
+                    bat "${env.PYTHON_PATH} -m pip install --upgrade pip"
+                    bat "${env.PYTHON_PATH} -m pip install -r requirements.txt"
                 }
             }
         }
@@ -24,8 +24,7 @@ pipeline {
         stage('Run Script') {
             steps {
                 script {
-                    // Run the main Python script
-                    bat "\"${env.PYTHON_PATH}\" stock.py"
+                    bat "${env.PYTHON_PATH} stock.py"
                 }
             }
         }
@@ -33,14 +32,15 @@ pipeline {
         stage('Run Tests') {
             steps {
                 echo 'Running tests...'
-                // Optional: Add actual test command here
-                // bat "\"${env.PYTHON_PATH}\" -m unittest discover tests"
+                // Uncomment when you add tests
+                // bat "${env.PYTHON_PATH} -m unittest discover tests"
             }
         }
 
         stage('Run Streamlit App') {
             steps {
                 echo 'Launching Streamlit app...'
+                // Launch Streamlit in a separate command window
                 bat 'start "" cmd /c "streamlit run stock.py"'
             }
         }
