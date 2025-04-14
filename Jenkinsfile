@@ -35,13 +35,15 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                // Run your tests if any
+                // Add any test commands here if you need
+                echo 'Running tests...'
             }
         }
 
         stage('Run Streamlit App') {
             steps {
-                // Run the Streamlit app
+                // Add commands for running Streamlit app if needed
+                echo 'Running Streamlit app...'
             }
         }
 
