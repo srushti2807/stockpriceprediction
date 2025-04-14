@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        python 'Python3' // Name as set in Global Tool Configuration
+    }
+
     environment {
         VENV_DIR = 'venv'
     }
@@ -15,14 +19,12 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Ensure a clean virtual environment
-                    bat '''
-                        IF EXIST "%VENV_DIR%" rmdir /S /Q %VENV_DIR%
+                    bat """
+                        IF EXIST "%VENV_DIR%" rmdir /S /Q "%VENV_DIR%"
                         python -m venv %VENV_DIR%
-                        call %VENV_DIR%\\Scripts\\activate.bat
-                        pip install --upgrade pip
-                        pip install -r requirements.txt
-                    '''
+                        call %VENV_DIR%\\Scripts\\activate.bat && pip install --upgrade pip
+                        call %VENV_DIR%\\Scripts\\activate.bat && pip install -r requirements.txt
+                    """
                 }
             }
         }
@@ -30,12 +32,11 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    // Add any test running steps here
-                    bat '''
+                    bat """
                         call %VENV_DIR%\\Scripts\\activate.bat
-                        REM Example test run command (adjust if you have test scripts)
-                        echo "No tests yet, skipping..."
-                    '''
+                        REM Add your test commands here
+                        echo "No tests implemented yet."
+                    """
                 }
             }
         }
@@ -43,11 +44,10 @@ pipeline {
         stage('Run Streamlit App') {
             steps {
                 script {
-                    // Run Streamlit app in the background
-                    bat '''
+                    bat """
                         call %VENV_DIR%\\Scripts\\activate.bat
                         start /B streamlit run stock.py > streamlit.log 2>&1
-                    '''
+                    """
                 }
             }
         }
