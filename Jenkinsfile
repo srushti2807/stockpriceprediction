@@ -1,12 +1,9 @@
 pipeline {
     agent any
 
-    tools {
-        python 'Python3' // Ensure this is set in Global Tool Configuration
-    }
-
     environment {
         VENV_DIR = 'venv'
+        PYTHON = 'python' // Or give full path if needed, e.g., 'C:\\Python311\\python.exe'
     }
 
     stages {
@@ -21,7 +18,7 @@ pipeline {
                 script {
                     bat """
                         IF EXIST "%VENV_DIR%" rmdir /S /Q "%VENV_DIR%"
-                        python -m venv %VENV_DIR%
+                        %PYTHON% -m venv %VENV_DIR%
                         call %VENV_DIR%\\Scripts\\activate.bat && pip install --upgrade pip
                         call %VENV_DIR%\\Scripts\\activate.bat && pip install -r requirements.txt
                     """
@@ -34,7 +31,6 @@ pipeline {
                 script {
                     bat """
                         call %VENV_DIR%\\Scripts\\activate.bat
-                        REM Add your test commands below
                         echo "✅ No automated tests yet."
                     """
                 }
@@ -64,5 +60,5 @@ pipeline {
             echo '❌ Deployment Failed.'
         }
     }
-}
+} 
 
