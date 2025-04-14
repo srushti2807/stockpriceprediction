@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         VENV_DIR = 'venv'
-        PYTHON = 'C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe' // Full path to Python
+        PYTHON = '"C:\\Users\\srushti jadhav\\AppData\\Local\\Programs\\Python\\Python310\\python.exe"' // Full path to Python with quotes
     }
 
     stages {
@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                     bat """
-                        IF EXIST "%VENV_DIR%" rmdir /S /Q "%VENV_DIR%"
+                        IF EXIST %VENV_DIR% rmdir /S /Q %VENV_DIR%
                         %PYTHON% -m venv %VENV_DIR%
                         call %VENV_DIR%\\Scripts\\activate.bat && pip install --upgrade pip
                         call %VENV_DIR%\\Scripts\\activate.bat && pip install -r requirements.txt
