@@ -17,7 +17,7 @@ from sklearn.metrics import mean_squared_error, accuracy_score, classification_r
 
 # ------------------ UI HEADER ------------------
 st.set_page_config(page_title="Stock Prediction Dashboard", layout="centered")
-st.markdown("# 📈 Stock Price Prediction & Analysis")
+st.markdown("# 📈 Multi Stock Price Prediction & Analysis CI/CD pipeline Devops Project")
 
 # ------------------ MODE SELECTION USING TABS ------------------
 tabs = st.tabs([
